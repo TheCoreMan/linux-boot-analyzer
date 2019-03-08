@@ -1,24 +1,42 @@
 import argparse
+import datetime
 import glob
 import os
+import platform
 import pprint
+# todo  from tdqm import tdqm - refrain from this for now, since collector shouldn't depend on frivolous packages.
+#  Would be cool thou
+import socket
 
 from parsers import UnitParser
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(description='Analyze linux boot unit files.')
-    parser.add_argument('output', 
-                        choices=['print', 'file', 'server'],
-                        help='Where to output to')
+    parser = argparse.ArgumentParser(description='Analyze linux boot unit files. Run me on the machine which you want '
+                                                 'to analyze!')
+    parser.add_argument('output', choices=['print', 'file', 'server'], help='Where to output to')
     return parser.parse_args()
+
+
+def collect_metadata():
+    return {
+        "hostname": socket.gethostname(),
+        "kernel": platform.version(),
+        "uname": platform.uname(),
+        "time": datetime.datetime.now()
+    }
 
 
 def main():
     args = parse_args()
     parsed_units = parse_all_units()
+    metadata = collect_metadata()
+    final_analysis_report = {
+        "metadata": metadata,
+        "units": parsed_units
+    }
     if args.output == "print":
-        pprint.pprint(parsed_units)
+        pprint.pprint(final_analysis_report)
     else:
         raise NotImplementedError(args.output)
 
