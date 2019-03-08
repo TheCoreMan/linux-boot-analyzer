@@ -10,7 +10,8 @@ def file_as_bytes(file):
 
 class UnitParser:
     def parse_unit(self, path, system):
-        # Sort of a factory method for ease of extendability
+        # Todo currently this is some sort of a factory method for ease of extendability. Need to improve this class's
+        #  design - for testability of different parsers, probably inject method. Read on factory DP in python
         if system == "systemd":
             parsed = parse_systemd(path)
 
@@ -41,6 +42,5 @@ class MultiOrderedDict(OrderedDict):
 
 def parse_systemd(path):
     config = configparser.RawConfigParser(dict_type=MultiOrderedDict, strict=False)
-    # cp = configparser.ConfigParser()
     config.read([path])
     return config
