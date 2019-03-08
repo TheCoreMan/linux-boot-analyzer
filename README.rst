@@ -6,16 +6,16 @@ Linux Boot Analyzer
 .. image:: https://img.shields.io/pypi/v/linux_boot_analyzer.svg
         :target: https://pypi.python.org/pypi/linux_boot_analyzer
 
-.. image:: https://img.shields.io/travis/TheCoreMan/linux_boot_analyzer.svg
-        :target: https://travis-ci.org/TheCoreMan/linux_boot_analyzer
+.. image:: https://img.shields.io/travis/TheCoreMan/linux-boot-analyzer.svg
+        :target: https://travis-ci.org/TheCoreMan/linux-boot-analyzer
 
 .. image:: https://readthedocs.org/projects/linux-boot-analyzer/badge/?version=latest
         :target: https://linux-boot-analyzer.readthedocs.io/en/latest/?badge=latest
         :alt: Documentation Status
 
 
-.. image:: https://pyup.io/repos/github/TheCoreMan/linux_boot_analyzer/shield.svg
-     :target: https://pyup.io/repos/github/TheCoreMan/linux_boot_analyzer/
+.. image:: https://pyup.io/repos/github/TheCoreMan/linux-boot-analyzer/shield.svg
+     :target: https://pyup.io/repos/github/TheCoreMan/linux-boot-analyzer/
      :alt: Updates
 
 
