@@ -8,7 +8,7 @@ from parsers import UnitParser
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Analyze linux boot unit files.')
-    parser.add_argument('--output', '-o',
+    parser.add_argument('output', 
                         choices=['print', 'file', 'server'],
                         help='Where to output to')
     return parser.parse_args()
