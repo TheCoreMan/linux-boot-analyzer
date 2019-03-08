@@ -1,5 +1,11 @@
 import configparser
+import hashlib
 from collections import OrderedDict
+
+
+def file_as_bytes(file):
+    with file:
+        return file.read()
 
 
 class UnitParser:
@@ -7,11 +13,22 @@ class UnitParser:
         # Sort of a factory method for ease of extendability
         if system == "systemd":
             parsed = parse_systemd(path)
-            return {
+
+            results = {
                 "system": "systemd",
                 "Description": parsed["Unit"]["Description"],
-                "ExecStart": parsed["Service"]["ExecStart"]
+                "ExecStart": parsed["Service"]["ExecStart"],
+                # todo this is probably memory inefficent, but meh.
+                "md5": hashlib.md5(file_as_bytes(open(path, 'rb'))).hexdigest(),
+                "sha-256": hashlib.sha256(file_as_bytes(open(path, 'rb'))).hexdigest()
             }
+
+            if "User" in parsed["Service"]:
+                results["User"] = parsed["Service"]["User"]
+            if "Group" in parsed["Service"]:
+                results["User"] = parsed["Service"]["Group"]
+
+            return results
 
 
 class MultiOrderedDict(OrderedDict):
@@ -19,7 +36,6 @@ class MultiOrderedDict(OrderedDict):
         if isinstance(value, list) and key in self:
             self[key].extend(value)
         else:
-            # super(MultiOrderedDict, self).__setitem__(key, value)
             super().__setitem__(key, value)
 
 
