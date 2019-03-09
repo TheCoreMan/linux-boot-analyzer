@@ -6,9 +6,6 @@
 import pytest
 
 
-from linux_boot_analyzer import linux_boot_analyzer
-
-
 @pytest.fixture
 def response():
     """Sample pytest fixture.
