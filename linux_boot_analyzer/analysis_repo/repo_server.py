@@ -1,10 +1,11 @@
 """
 Code loosely based on http://www.postgresqltutorial.com/postgresql-python/connect/
 """
-
+import pprint
 from configparser import ConfigParser
 
 import psycopg2
+from flask import Flask, request
 
 
 def config(filename='database.ini', section='postgresql'):
@@ -68,8 +69,18 @@ def connect():
             print('Database connection closed.')
 
 
+app = Flask(__name__)
+
+
+@app.route("/report_analysis", methods=['POST'])
+def report_analysis():
+    report_data = request.json
+    pprint.pprint(report_data)
+    return "Awesome, dude."
+
+
 def main():
-    connect()
+    app.run(debug=True)
 
 
 if __name__ == '__main__':

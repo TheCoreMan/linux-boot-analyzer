@@ -9,6 +9,8 @@ import pprint
 #  Would be cool thou
 import socket
 
+import requests
+
 from parsers import UnitParser
 
 
@@ -26,6 +28,11 @@ def main():
         print("Trying to write output to " + args.output_path)
         with open(args.output_path, "w") as output_file:
             json.dump(final_analysis_report, output_file)
+    elif args.output == "server":
+        server_host = args.IP + ":" + args.port
+        url = "http://" + server_host + "/report_analysis"  # TODO extract to common
+        print("Trying to write output to " + url)
+        requests.post(url, json=final_analysis_report)
     else:
         raise NotImplementedError(args.output)
 
@@ -42,7 +49,9 @@ def parse_args():
     file_output = subparsers.add_parser("file", help="Write to local file.")
     file_output.add_argument("--output_path", "-o", help="Where to output results to",
                              default=os.path.join(os.curdir, "lba.out"))
-    # TODO add server
+    file_output = subparsers.add_parser("server", help="Send to remote DB server.")
+    file_output.add_argument("IP", help="IP address of server")
+    file_output.add_argument("port", help="Port of the server")
 
     return parser.parse_args()
 
