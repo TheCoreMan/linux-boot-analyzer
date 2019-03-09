@@ -103,3 +103,6 @@ ENV/
 
 # pycharm
 .idea
+
+# secret files - don't upload to GitHub, silly programmer
+linux_boot_analyzer/analysis_repo/secret*
