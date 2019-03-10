@@ -9,8 +9,9 @@ import pprint
 #  Would be cool thou
 import socket
 
-import requests
 
+import requests
+from common import SYSTEM_TO_UNIT_FILE_GLOB
 from parsers import UnitParser
 
 
@@ -40,25 +41,25 @@ def main():
 def parse_args():
     parser = argparse.ArgumentParser(
         description='Analyze linux boot unit files. Run me on the machine which you want to analyze!')
-    parser.add_argument('--systems', '-s', nargs='+', help='Which systems to analyze', default=["systemd"],
-                        choices=SYSTEM_TO_UNIT_FILE_GLOB.keys())
 
     subparsers = parser.add_subparsers(title="output", help="Choose where to output the result to", dest='output')
 
-    subparsers.add_parser("print", help="Print to standard output (useful for debugging).")
-    file_output = subparsers.add_parser("file", help="Write to local file.")
-    file_output.add_argument("--output_path", "-o", help="Where to output results to",
+    print_parser = subparsers.add_parser("print", help="Print to standard output (useful for debugging).")
+    print_parser.add_argument('-s', '--systems', nargs='+', help='Which systems to analyze', default=["systemd"],
+                              choices=SYSTEM_TO_UNIT_FILE_GLOB.keys())
+    file_parser = subparsers.add_parser("file", help="Write to local file.")
+    file_parser.add_argument("--output_path", "-o", help="Where to output results to",
                              default=os.path.join(os.curdir, "lba.out"))
-    file_output = subparsers.add_parser("server", help="Send to remote DB server.")
-    file_output.add_argument("IP", help="IP address of server")
-    file_output.add_argument("port", help="Port of the server")
+    file_parser.add_argument('-s', '--systems', nargs='+', help='Which systems to analyze', default=["systemd"],
+                             choices=SYSTEM_TO_UNIT_FILE_GLOB.keys())
+    
+    server_output = subparsers.add_parser("server", help="Send to remote DB server.")
+    server_output.add_argument("IP", help="IP address of server")
+    server_output.add_argument("port", help="Port of the server")
+    server_output.add_argument('-s', '--systems', nargs='+', help='Which systems to analyze', default=["systemd"],
+                             choices=SYSTEM_TO_UNIT_FILE_GLOB.keys())
 
     return parser.parse_args()
-
-
-SYSTEM_TO_UNIT_FILE_GLOB = {
-    "systemd": os.path.join("/", "etc", "systemd", "system", "*service")
-}
 
 
 def get_all_unit_paths_for_system(system):
