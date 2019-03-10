@@ -9,6 +9,8 @@ import pprint
 #  Would be cool thou
 import socket
 
+
+import requests
 from common import SYSTEM_TO_UNIT_FILE_GLOB
 from parsers import UnitParser
 
@@ -27,6 +29,11 @@ def main():
         print("Trying to write output to " + args.output_path)
         with open(args.output_path, "w") as output_file:
             json.dump(final_analysis_report, output_file)
+    elif args.output == "server":
+        server_host = args.IP + ":" + args.port
+        url = "http://" + server_host + "/report_analysis"  # TODO extract to common
+        print("Trying to write output to " + url)
+        requests.post(url, json=final_analysis_report)
     else:
         raise NotImplementedError(args.output)
 
@@ -45,7 +52,12 @@ def parse_args():
                              default=os.path.join(os.curdir, "lba.out"))
     file_parser.add_argument('-s', '--systems', nargs='+', help='Which systems to analyze', default=["systemd"],
                              choices=SYSTEM_TO_UNIT_FILE_GLOB.keys())
-    # TODO add server
+    
+    server_output = subparsers.add_parser("server", help="Send to remote DB server.")
+    server_output.add_argument("IP", help="IP address of server")
+    server_output.add_argument("port", help="Port of the server")
+    server_output.add_argument('-s', '--systems', nargs='+', help='Which systems to analyze', default=["systemd"],
+                             choices=SYSTEM_TO_UNIT_FILE_GLOB.keys())
 
     return parser.parse_args()
 
