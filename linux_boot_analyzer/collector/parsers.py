@@ -48,6 +48,10 @@ class UnitParser:
 
         # todo elif self.system == "sysv": shlex and parse the executable from the "start" directive if exists.
 
+        elif self.system == "awesomeboot":
+            parsed = 6
+            results["awesomeboot-factor"] = parsed
+
         return results
 
 
